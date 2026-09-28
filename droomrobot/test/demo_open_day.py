@@ -62,9 +62,9 @@ def guided_visualization():
     droomrobot_control.droomrobot.say('Maybe green, or purple, or even rainbow colors.')
     droomrobot_control.droomrobot.say('And notice how happy you feel in this place.', sleep_time=1)
     droomrobot_control.droomrobot.say('Breathe in deeply through your nose.')
-    droomrobot_control.droomrobot.play_audio('../resources/audio/breath_in_amplified.wav')
+    droomrobot_control.droomrobot.play_audio('resources/audio/breath_in_amplified.wav')
     droomrobot_control.droomrobot.say('And blow out slowly through your mouth.')
-    droomrobot_control.droomrobot.play_audio('../resources/audio/breath_out_amplified.wav')
+    droomrobot_control.droomrobot.play_audio('resources/audio/breath_out_amplified.wav')
     droomrobot_control.droomrobot.say('Well done, you are doing a great job.', sleep_time=1)
     droomrobot_control.droomrobot.say('And now you will notice a small, warm light appearing on your finger.')
     droomrobot_control.droomrobot.say('That light is magical, and it charges up your strength.')
@@ -138,9 +138,9 @@ def geleide_fantasie():
     droomrobot_control.droomrobot.say('Misschien wel groen, of paars, of regenboog kleuren.')
     droomrobot_control.droomrobot.say('En merk maar hoe fijn jij je op deze plek voelt.')
     droomrobot_control.droomrobot.say('Adem diep in door je neus.', )
-    droomrobot_control.droomrobot.play_audio('../resources/audio/breath_in_amplified.wav')
+    droomrobot_control.droomrobot.play_audio('resources/audio/breath_in_amplified.wav')
     droomrobot_control.droomrobot.say('en blaas langzaam uit door je mond.')
-    droomrobot_control.droomrobot.play_audio('../resources/audio/breath_out_amplified.wav')
+    droomrobot_control.droomrobot.play_audio('resources/audio/breath_out_amplified.wav')
     droomrobot_control.droomrobot.say(f'Goed zo, dat doe je al heel knap.')
     droomrobot_control.droomrobot.say('En nu zal je merken dat er een klein, warm, lichtje op je vinger verschijnt.')
     droomrobot_control.droomrobot.say('Dat lichtje is magisch, en laadt jouw kracht op.')
@@ -179,14 +179,14 @@ app = SICApplication()
 # interaction_context = InteractionContext.SONDE
 # droomrobot_script = DroomrobotScript(droomrobot=droomrobot, interaction_context=interaction_context)
 droomrobot_control = DroomrobotControl()
-droomrobot_control.connect(sic_app=app, mini_ip="10.0.0.155", mini_id="00268", mini_password="alphago",
+droomrobot_control.connect(sic_app=app, mini_ip="10.0.0.123", mini_id="00041", mini_password="mini",
                             redis_ip="10.0.0.109",
                             google_keyfile_path=abspath(join("../../conf", "google", "google_keyfile.json")),
                             env_path=abspath(join("../../conf", ".env")),
                             sample_rate_dialogflow_hertz=44100, dialogflow_language="nl",
                             dialogflow_timeout=10.0,
                             tts_conf=ElevenLabsTTSConf(),
-                            computer_test_mode=True)
+                            computer_test_mode=False)
 
 # droomrobot_control.droomrobot = Alphamini(ip="10.0.0.228",
 #                                             mini_id="00297",
