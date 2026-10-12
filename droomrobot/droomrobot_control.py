@@ -23,14 +23,16 @@ class DroomrobotControl:
                 dialogflow_timeout=None,
                 tts_conf=GoogleTTSConf(),
                 env_path=None,
-                computer_test_mode=False):
+                computer_test_mode=False,
+                mic_device_index=None):
 
         self.droomrobot = Droomrobot(sic_app=sic_app, mini_ip=mini_ip, mini_id=mini_id, mini_password=mini_password, redis_ip=redis_ip,
                                      google_keyfile_path=google_keyfile_path, sample_rate_dialogflow_hertz=sample_rate_dialogflow_hertz,
                                      dialogflow_language=dialogflow_language, dialogflow_timeout=dialogflow_timeout,
                                      tts_conf=tts_conf,
                                      env_path=env_path,
-                                     computer_test_mode=computer_test_mode)
+                                     computer_test_mode=computer_test_mode,
+                                     mic_device_index=mic_device_index)
 
     def disconnect(self):
         if self.droomrobot:

@@ -2,6 +2,7 @@ from json import load
 from os.path import abspath, join
 
 from sic_framework.core.sic_application import SICApplication
+from sic_framework.devices.common_desktop.desktop_microphone import MicrophoneConf
 from sic_framework.devices.common_mini.mini_speaker import MiniSpeakersConf
 
 from droomrobot.core import Droomrobot, SDKAnimationType, InteractionConf
@@ -168,6 +169,10 @@ def dance():
 
 app = SICApplication()
 
+# Index of the external microphone on this computer (None = use the Alphamini mic).
+# List input devices with: python -c "import pyaudio; p=pyaudio.PyAudio(); [print(i, p.get_device_info_by_index(i)['name']) for i in range(p.get_device_count()) if p.get_device_info_by_index(i)['maxInputChannels']>0]"
+mic_device_index = 1  # BOYA mini
+
 # droomrobot = Droomrobot(sic_app=app, mini_ip="10.0.0.228", mini_id="00268", mini_password="alphago",
 #                             redis_ip="10.0.0.109",
 #                             google_keyfile_path=abspath(join("../../conf", "google", "google_keyfile.json")),
@@ -179,21 +184,25 @@ app = SICApplication()
 # interaction_context = InteractionContext.SONDE
 # droomrobot_script = DroomrobotScript(droomrobot=droomrobot, interaction_context=interaction_context)
 droomrobot_control = DroomrobotControl()
-droomrobot_control.connect(sic_app=app, mini_ip="10.0.0.123", mini_id="00041", mini_password="mini",
-                            redis_ip="10.0.0.109",
+droomrobot_control.connect(sic_app=app, mini_ip="10.15.2.237", mini_id="00041", mini_password="mini",
+                            redis_ip="10.15.2.225",
                             google_keyfile_path=abspath(join("../../conf", "google", "google_keyfile.json")),
                             env_path=abspath(join("../../conf", ".env")),
                             sample_rate_dialogflow_hertz=44100, dialogflow_language="nl",
-                            dialogflow_timeout=10.0,
+                            dialogflow_timeout=7.0,
                             tts_conf=ElevenLabsTTSConf(),
-                            computer_test_mode=False)
+                            computer_test_mode=False,
+                            mic_device_index=mic_device_index)
 
-# droomrobot_control.droomrobot = Alphamini(ip="10.0.0.228",
-#                                             mini_id="00297",
-#                                             mini_password="alphago",
+# Zyxel_3589:
+
+# droomrobot_control.droomrobot = Alphamini(ip="10.0.0.123",
+#                                             mini_id="00041",
+#                                             mini_password="mini",
 #                                             redis_ip="10.0.0.109",
 #                                             speaker_conf=MiniSpeakersConf(sample_rate=44100),
-#                                             bypass_install=True)
+#                                             bypass_install=True,
+#                                           mic_conf=mic_conf,)
 
 # file_path = "../user_models/user_model_999.json"
 # with open(file_path, "r", encoding="utf-8") as file:

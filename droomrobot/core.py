@@ -16,6 +16,7 @@ from mini import MouthLampColor, MouthLampMode
 from sic_framework.core.message_python2 import AudioRequest
 from sic_framework.core.sic_application import SICApplication
 from sic_framework.devices.alphamini import Alphamini, SDKAnimationType
+from sic_framework.devices.common_desktop.desktop_microphone import MicrophoneConf
 from sic_framework.devices.common_desktop.desktop_speakers import SpeakersConf
 from sic_framework.devices.common_mini.mini_speaker import MiniSpeakersConf
 from sic_framework.devices.desktop import Desktop
@@ -115,7 +116,8 @@ class WiFiDevice:
 class Droomrobot:
     def __init__(self, sic_app: SICApplication, mini_ip, mini_id, mini_password, redis_ip,
                  google_keyfile_path, sample_rate_dialogflow_hertz=44100, dialogflow_language="nl", dialogflow_timeout=None,
-                 tts_conf: TTSConf = GoogleTTSConf(), env_path=None, computer_test_mode=False):
+                 tts_conf: TTSConf = GoogleTTSConf(), env_path=None, computer_test_mode=False,
+                 mic_device_index=None):
 
         print("\n SETTING UP BASIC PROCESSING")
         self.sic_app = sic_app
@@ -198,6 +200,7 @@ class Droomrobot:
         if not computer_test_mode:
             print("\n SETTING UP ALPHAMINI")
             print("Connecting to SIC on alphamini")
+            mic_conf = MicrophoneConf(device_index=1)
             self.mini_id = mini_id
             self.mini = Alphamini(
                 ip=mini_ip,
@@ -206,18 +209,25 @@ class Droomrobot:
                 redis_ip=redis_ip,
                 speaker_conf=MiniSpeakersConf(sample_rate=self.sample_rate),
                 bypass_install=False,
-                sic_version='2.2.1'
+                sic_version='2.2.1',
+                mic_conf=mic_conf
             )
             self.speaker = self.mini.speaker
-            self.mic = self.mini.mic
-            self.mic = self.mini.mic
-            self.mic = self.mini.mic
+            if mic_device_index is None:
+                self.mic = self.mini.mic
+            else:
+                # Use an external microphone connected to this computer instead of the Alphamini mic
+                desktop = Desktop(mic_conf=MicrophoneConf(device_index=mic_device_index,
+                                                          sample_rate=sample_rate_dialogflow_hertz))
+                self.mic = desktop.mic
             self.device_name = "alphamini"
             self.mini.animate(SDKAnimationType.ACTION, "009")  # Wake up
             self.mini.animate(SDKAnimationType.EXPRESSION, "codemao20")  # Blink
         else:
             print("\n SETTING UP COMPUTER")
-            desktop = Desktop(speakers_conf=SpeakersConf(sample_rate=self.sample_rate))
+            desktop = Desktop(mic_conf=MicrophoneConf(device_index=mic_device_index,
+                                                      sample_rate=sample_rate_dialogflow_hertz),
+                              speakers_conf=SpeakersConf(sample_rate=self.sample_rate))
             self.speaker = desktop.speakers
             self.mic = desktop.mic
             self.device_name = "computer"
